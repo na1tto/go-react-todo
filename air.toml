@@ -1,0 +1,55 @@
+# .air.toml
+
+# Define o diretório raiz do projeto. O ponto "." significa o diretório atual.
+root = "."
+# Define o diretório temporário onde os arquivos de build serão armazenados.
+tmp_dir = "tmp"
+
+[build]
+# O comando principal para compilar seu projeto.
+# 'go build -o ./tmp/main .' compila todos os arquivos .go no diretório atual
+# e cria um executável chamado 'main' dentro do diretório 'tmp'.
+cmd = "go build -o ./tmp/main ."
+
+# O caminho para o binário que o Air deve executar após um build bem-sucedido.
+# Deve corresponder ao que foi definido no 'cmd'.
+bin = "tmp/main"
+
+# (Opcional) Comando completo para executar o binário. Útil para injetar variáveis de ambiente.
+# Exemplo: full_bin = "APP_ENV=dev PORT=8080 ./tmp/main"
+full_bin = "./tmp/main"
+
+# Lista de diretórios que o Air deve observar em busca de mudanças.
+# O ponto "." inclui todos os subdiretórios a partir da raiz.
+include_dir = ["."]
+
+# Lista de diretórios que devem ser IGNORADOS.
+# É crucial ignorar 'tmp' para evitar um loop infinito de recarregamento.
+exclude_dir = ["tmp", "vendor"]
+
+# Lista de extensões de arquivo que disparam um recarregamento.
+# Útil para recarregar também quando arquivos de template ou configuração mudam.
+include_ext = ["go", "tpl", "tmpl", "html", "env"]
+
+# Expressões regulares para arquivos a serem ignorados.
+# Muito útil para ignorar arquivos de teste.
+exclude_regex = ["_test.go"]
+
+# Atraso em milissegundos antes de iniciar um novo build após uma mudança.
+# Ajuda a evitar builds múltiplos se você salvar o arquivo várias vezes rapidamente.
+delay = 1000 # 1 segundo
+
+[log]
+# Habilita o timestamp nos logs do Air.
+time = true
+
+[color]
+# Personaliza as cores do output para melhor legibilidade.
+main = "yellow"
+watcher = "cyan"
+build = "green"
+runner = "magenta"
+
+[misc]
+# Deleta o diretório 'tmp' quando o Air é finalizado.
+clean_on_exit = true
